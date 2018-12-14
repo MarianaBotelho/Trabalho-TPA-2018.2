@@ -4,6 +4,8 @@ import imobiliaria.control.Control;
 import imobiliaria.model.*;
 import view.SpringUtilities;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,6 +45,26 @@ public class Imobiliaria {
         JPanel jpAgendar = new JPanel(); //cria painel Agendar
         jpAgendar.setLayout(new BoxLayout(jpAgendar, BoxLayout.PAGE_AXIS));
 
+        //lista de imoveis cadastrados
+        JLabel textoImovelAgendar = new JLabel("Selecione o imovel:");
+        ArrayList<Imovel> listaIm = controle.getImovel();
+        ArrayList<String> imoveis = new ArrayList<String>();
+        for(Imovel im : listaIm)
+            imoveis.add(im.getCodigo());
+        String[] Imov = imoveis.toArray(new String[0]);
+        System.out.println(Imov); //Imo??
+        JComboBox ImovelI = new JComboBox(Imov);
+
+        //lista de funcionarios
+        JLabel textoCorretorResp = new JLabel("Selecione o corretor responsavel:");
+        ArrayList<Funcionario> listaF = controle.getCorretor();
+        ArrayList<String> corretores = new ArrayList<String>();
+        for(Funcionario func : listaF)
+            corretores.add(func.getNome());
+        String[] corretorResp = corretores.toArray(new String[0]);
+        System.out.println(corretorResp);
+        JComboBox corretorResponsavel = new JComboBox(corretorResp);
+
         JLabel textoGasto = new JLabel("Insira gastos:",JLabel. TRAILING); //cria texto
         JTextField jtfGasto = new JTextField(20); //cria campo Gastos
         textoGasto.setLabelFor(jtfGasto);
@@ -57,6 +79,10 @@ public class Imobiliaria {
 
         jpAgendar.add(textoGasto); //add texto Gasto
         jpAgendar.add(jtfGasto); //add campo Gastos
+        jpAgendar.add(textoImovelAgendar);
+        jpAgendar.add(ImovelI);
+        jpAgendar.add(textoCorretorResp);
+        jpAgendar.add(corretorResponsavel);
         jpAgendar.add(textoData); //add texto Data
         jpAgendar.add(jtfData); //add campo Data
         jpAgendar.add(textoCliente); //add texto Cliente
@@ -69,13 +95,34 @@ public class Imobiliaria {
         botaoAgendarOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String gastoV = jtfGasto.getText();
+                String gastoV =  jtfGasto.getText();
                 String dataV = jtfData.getText();
                 String clienteV = jtfCliente.getText();
-                //controle.agendarVisita(imovel, corretor, clienteV, gastoV, dataV);
+                String imovelI = ImovelI.getSelectedItem().toString();
+                String corretorR = corretorResponsavel.getSelectedItem().toString();
+
+                //Programa não está salvando a data agendada
+                /*
+                Imovel imv = null;
+                ArrayList<Imovel> listaImove = controle.getImovel();
+                for(Imovel i : listaImove){
+                    if(i.getCodigo().equals(imovelI))
+                        imv = i;
+                        break;
+                }
+
+                try {
+                    controle.agendarVisita(imv, corretorR, clienteV, gastoV, dataV);
+                }catch (Exception ex){
+                    System.out.println(ex.getMessage());
+                }
+
+                /*ArrayList<Imovel> ListaI = controle.getImovel();
+                for(Imovel imv : ListaI)
+                    System.out.println(imv.getCodigo());
+                */
             }
         });
-
 
         //Painel Cadastros
         JPanel jpCadastros = new JPanel(); //cria painel Cadastros
@@ -331,11 +378,29 @@ public class Imobiliaria {
 
 
         JTabbedPane tpAbas = new JTabbedPane(); //cria tabas
-        tpAbas.addTab("Bem vindo", jpBemVindo);
+        tpAbas.addTab("Bem vindo", jpBemVindo); //add taba Bem vindo
         tpAbas.addTab("Agendar", jpAgendar); //add taba Agendar
         tpAbas.addTab("Cadastros", jpCadastros); //add tava Cadastro
         janela.add(tpAbas); //add tabas a janela
-        janela.setLocation(270, 90); //lugar onde ela abre
+
+        tpAbas.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent e) {
+                if (tpAbas.getSelectedIndex() == 1){
+                    ImovelI.removeAllItems();
+                    ArrayList<Imovel> listaI = controle.getImovel();
+                    for(Imovel imv : listaI)
+                        ImovelI.addItem(imv.getCodigo());
+
+                    corretorResponsavel.removeAllItems();
+                    ArrayList<Funcionario> listaF = controle.getCorretor();
+                    for(Funcionario fun : listaF)
+                        corretorResponsavel.addItem(fun.getNome());
+                }
+            }
+        });
+
+
+        janela.setLocation(270, 90); //lugar onde a janela abre
         janela.setSize(800,600); //tamanho da janela
         janela.setVisible(true); //mostra janela
     }
