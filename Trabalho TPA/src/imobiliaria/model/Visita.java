@@ -1,29 +1,33 @@
 package imobiliaria.model;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
-public class Visita
-{
-    private ArrayList<Imovel> imovel;
-    private ArrayList<Funcionario> corretor;
+public class Visita {
+    private Imovel imovelVisitado;
+    private Funcionario corretorResponsavel;
     private Comprador cliente;
     private float gasto;
-    private String data;
+    private LocalDate data;
+    private final int codigoVisita;
 
-    public ArrayList<Imovel> getImovel() {
-        return imovel;
+    public int getCodigoVisita() {
+        return codigoVisita;
     }
 
-    public void setImovel(ArrayList<Imovel> imovel) {
-        this.imovel = imovel;
+    public Imovel getImovel() {
+        return imovelVisitado;
     }
 
-    public ArrayList<Funcionario> getCorretor() {
-        return corretor;
+    public void setImovel(Imovel imovelVisitado) {
+        this.imovelVisitado = imovelVisitado;
     }
 
-    public void setCorretor(ArrayList<Funcionario> corretor) {
-        this.corretor = corretor;
+    public Funcionario getCorretor() {
+        return corretorResponsavel;
+    }
+
+    public void setCorretor(Funcionario corretor) {
+        this.corretorResponsavel = corretorResponsavel;
     }
 
     public Comprador getCliente() {
@@ -42,19 +46,20 @@ public class Visita
         this.gasto = gasto;
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
-    public Visita(ArrayList<Imovel> imovel, ArrayList<Funcionario> corretor, Comprador cliente, float gasto, String data) {
-        this.imovel = imovel;
-        this.corretor = corretor;
+    public Visita(Imovel imovelVisitado, Funcionario corretorResponsavel, Comprador cliente, float gasto, LocalDate data, int codigoVisita) {
+        this.imovelVisitado = imovelVisitado;
+        this.corretorResponsavel = corretorResponsavel;
         this.cliente = cliente;
         this.gasto = gasto;
         this.data = data;
+        this.codigoVisita = codigoVisita;
     }
 }
