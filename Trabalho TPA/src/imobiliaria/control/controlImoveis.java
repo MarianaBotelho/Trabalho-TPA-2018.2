@@ -2,6 +2,7 @@ package imobiliaria.control;
 
 import imobiliaria.model.Imovel;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ public class controlImoveis {
 
     private static void adicionarImovel(Imovel i){
         imovel.add(i);
+        salvarArquivo();
     }
 
     public static void cadastrarImovel(String codigo, String nomeProprietario, String endereco, int tipo, int qtdQuarto, float precoInicial){
@@ -25,6 +27,7 @@ public class controlImoveis {
         for(Imovel i : imovel){
             if(i.getCodigo().equals(codigo)) {
                 imovel.remove(i);
+                salvarArquivo();
                 return true;
             }
         }
@@ -44,6 +47,7 @@ public class controlImoveis {
         for (Imovel i : imovel) {
             if (i.getCodigo().equals(codigo)) {
                 i.setPrecoInicial(precoInicial);
+                salvarArquivo();
                 return true;
             }
         }
@@ -56,6 +60,7 @@ public class controlImoveis {
                 i.setStatus(true);
                 i.setPrecoFinal(precoFinal);
                 i.setDataVenda(LocalDate.now());
+                salvarArquivo();
                 return true;
             }
         }
@@ -189,5 +194,27 @@ public class controlImoveis {
             return imovel.get(i).getDataVenda().toString();
         else
             return "Não vendido";
+    }
+
+    private static void salvarArquivo(){
+        try {
+            FileOutputStream file = new FileOutputStream("Imoveis.bin");
+            ObjectOutputStream objeto = new ObjectOutputStream(file);
+            objeto.writeObject(imovel);
+            objeto.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarArquivo(){
+        try {
+            FileInputStream file = new FileInputStream("Imoveis.bin");
+            ObjectInputStream objeto = new ObjectInputStream(file);
+            imovel = (ArrayList<Imovel>) objeto.readObject();
+            objeto.close();
+        } catch (Exception e) {
+            imovel.clear();
+        }
     }
 }

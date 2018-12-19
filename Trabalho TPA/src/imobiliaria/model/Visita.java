@@ -1,8 +1,9 @@
 package imobiliaria.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Visita {
+public class Visita implements Serializable {
     private Imovel imovelVisitado;
     private Funcionario corretorResponsavel;
     private Comprador cliente;

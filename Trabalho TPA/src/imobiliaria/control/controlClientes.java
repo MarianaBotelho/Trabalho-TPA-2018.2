@@ -4,6 +4,7 @@ import imobiliaria.model.Cliente;
 import imobiliaria.model.Comprador;
 import imobiliaria.model.Vendedor;
 
+import java.io.*;
 import java.util.ArrayList;
 
 public class controlClientes {
@@ -20,10 +21,12 @@ public class controlClientes {
 
     private static void adicionarClienteV(Vendedor v){
         clienteVendedor.add(v);
+        salvarArquivoVendedor();
     }
 
     private static void adicionarClienteC(Comprador c){
         clienteComprador.add(c);
+        salvarArquivoComprador();
     }
 
     public static void cadastrarCliente(String cpf, String email, String nome, String endereco, String telefone, int tipo){
@@ -41,6 +44,7 @@ public class controlClientes {
             for(Vendedor v : clienteVendedor){
                 if(v.getCpf().equals(cpf)) {
                     clienteVendedor.remove(v);
+                    salvarArquivoVendedor();
                     return true;
                 }
             }
@@ -48,6 +52,7 @@ public class controlClientes {
             for(Comprador c : clienteComprador){
                 if(c.getCpf().equals(cpf)) {
                     clienteComprador.remove(c);
+                    salvarArquivoComprador();
                     return true;
                 }
             }
@@ -62,6 +67,7 @@ public class controlClientes {
                     v.setEmail(email);
                     v.setEndereco(endereco);
                     v.setTelefone(telefone);
+                    salvarArquivoVendedor();
                     return true;
                 }
             }
@@ -71,6 +77,7 @@ public class controlClientes {
                     c.setEmail(email);
                     c.setEndereco(endereco);
                     c.setTelefone(telefone);
+                    salvarArquivoComprador();
                     return true;
                 }
             }
@@ -218,5 +225,49 @@ public class controlClientes {
                 return v;
         }
         return null;
+    }
+
+    private static void salvarArquivoComprador(){
+        try {
+            FileOutputStream file = new FileOutputStream("Comprador.bin");
+            ObjectOutputStream objeto = new ObjectOutputStream(file);
+            objeto.writeObject(clienteComprador);
+            objeto.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void salvarArquivoVendedor(){
+        try {
+            FileOutputStream file = new FileOutputStream("Vendedor.bin");
+            ObjectOutputStream objeto = new ObjectOutputStream(file);
+            objeto.writeObject(clienteVendedor);
+            objeto.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarArquivoComprador(){
+        try {
+            FileInputStream file = new FileInputStream("Comprador.bin");
+            ObjectInputStream objeto = new ObjectInputStream(file);
+            clienteComprador = (ArrayList<Comprador>) objeto.readObject();
+            objeto.close();
+        } catch (Exception e) {
+            clienteComprador.clear();
+        }
+    }
+
+    public static void carregarArquivoVendedor(){
+        try {
+            FileInputStream file = new FileInputStream("Vendedor.bin");
+            ObjectInputStream objeto = new ObjectInputStream(file);
+            clienteVendedor = (ArrayList<Vendedor>) objeto.readObject();
+            objeto.close();
+        } catch (Exception e) {
+            clienteVendedor.clear();
+        }
     }
 }

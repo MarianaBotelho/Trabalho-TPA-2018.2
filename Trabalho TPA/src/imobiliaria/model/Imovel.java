@@ -1,9 +1,9 @@
 package imobiliaria.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Imovel
-{
+public class Imovel implements Serializable {
     private final String codigo;
     private final Vendedor proprietario;
     private final String endereco;

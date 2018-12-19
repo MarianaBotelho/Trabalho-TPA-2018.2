@@ -17,7 +17,7 @@ public class telaVisualizarClientes {
         areaTexto.setEditable(false);
         areaTexto.setBounds(5, 5, 100, 200);
         JScrollPane scrollPane = new JScrollPane(areaTexto, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(3,3,400,400);
+        scrollPane.setBounds(3,3,780,500);
         janelaVisualizar.add(scrollPane, BorderLayout.CENTER);
 
 

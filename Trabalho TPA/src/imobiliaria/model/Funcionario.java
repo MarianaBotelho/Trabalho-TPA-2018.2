@@ -1,6 +1,8 @@
 package imobiliaria.model;
 
-public class Funcionario extends Registro{
+import java.io.Serializable;
+
+public class Funcionario extends Registro implements Serializable {
     private final String matricula;
     private float comissao;
 

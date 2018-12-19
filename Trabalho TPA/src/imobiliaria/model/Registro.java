@@ -1,6 +1,8 @@
 package imobiliaria.model;
 
-public abstract class Registro{
+import java.io.Serializable;
+
+public abstract class Registro implements Serializable {
    private final String nome;
    private String endereco;
    private String telefone;

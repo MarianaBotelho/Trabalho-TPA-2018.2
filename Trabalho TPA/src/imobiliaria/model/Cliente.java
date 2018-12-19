@@ -1,6 +1,8 @@
 package imobiliaria.model;
 
-public abstract class Cliente extends Registro{
+import java.io.Serializable;
+
+public abstract class Cliente extends Registro implements Serializable {
     private String email;
     private final String cpf;
     private final int tipo; // 0 - Comprador | 1 - Vendedor

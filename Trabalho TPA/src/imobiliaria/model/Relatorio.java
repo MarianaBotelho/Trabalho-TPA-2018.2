@@ -1,7 +1,7 @@
 package imobiliaria.model;
 import java.time.LocalDate;
 
-public class Relatorio{
+public class Relatorio {
     private float valorArrecadadoTotal;
     private float gastos; // gastos com visitas e comissoes (passados)
     private float gastosPrevistos; // gastos com visitas (futuro)

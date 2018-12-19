@@ -4,6 +4,7 @@ import imobiliaria.model.Imovel;
 import imobiliaria.model.Relatorio;
 import imobiliaria.model.Visita;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 

@@ -5,22 +5,22 @@ import imobiliaria.model.Funcionario;
 import imobiliaria.model.Imovel;
 import imobiliaria.model.Visita;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class controlAgendamento {
     private static ArrayList<Visita> visita = new ArrayList();
-    private static int codigoVisita = 1;
 
     public static void adicionarVisita_Dia(Visita s){
         visita.add(s);
+        salvarArquivo();
     }
 
     public static void agendarVisita(Imovel imovelVisitado, Funcionario corretorResponsavel, Comprador cliente, float gasto, LocalDate data){
-        Visita s = new Visita(imovelVisitado, corretorResponsavel, cliente, gasto, data, codigoVisita);
+        Visita s = new Visita(imovelVisitado, corretorResponsavel, cliente, gasto, data, visita.size()+1);
         adicionarVisita_Dia(s);
-        codigoVisita++;
-    }
+        }
 
     public static ArrayList<Visita> getVisita() {
         return visita;
@@ -36,17 +36,11 @@ public class controlAgendamento {
     }
 
     public static boolean alterarVisita(String codigoImovel, String cpfCliente, float gasto, LocalDate dataVisita){
-        /*Funcionario fun = null;
-        for (Funcionario f : controlCorretor.getCorretor()) {
-            if (f.getNome().equals(nomeFuncionario)) {
-                fun = f;
-                break;
-            }
-        }*/
         for (Visita v : visita) {
             if ((v.getImovel().getCodigo().equals(codigoImovel)) && (v.getCliente().getCpf().equals(cpfCliente))) {
                 v.setData(dataVisita);
                 v.setGasto(gasto);
+                salvarArquivo();
                 return true;
             }
         }
@@ -63,8 +57,9 @@ public class controlAgendamento {
 
     public static String getCpfClienteFromCodigoVisita(int codigoVisita){
         for(Visita v : visita){
-            if(v.getCodigoVisita() == codigoVisita)
+            if(v.getCodigoVisita() == codigoVisita){
                 return v.getCliente().getCpf();
+            }
         }
         return null;
     }
@@ -106,13 +101,14 @@ public class controlAgendamento {
     }
 
     public static int getCodigoVisitaTotal(){
-        return codigoVisita;
+        return visita.size();
     }
 
     public static boolean removerVisita(String codigoImovel, String cpfCliente){
         for(Visita v : visita){
             if((v.getImovel().getCodigo().equals(codigoImovel)) && (v.getCliente().getCpf().equals(cpfCliente))) {
                 visita.remove(v);
+                salvarArquivo();
                 return true;
             }
         }
@@ -125,5 +121,27 @@ public class controlAgendamento {
                 return true;
         }
         return false;
+    }
+
+    private static void salvarArquivo(){
+        try {
+            FileOutputStream file = new FileOutputStream("Visitas.bin");
+            ObjectOutputStream objeto = new ObjectOutputStream(file);
+            objeto.writeObject(visita);
+            objeto.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarArquivo(){
+        try {
+            FileInputStream file = new FileInputStream("Visitas.bin");
+            ObjectInputStream objeto = new ObjectInputStream(file);
+            visita = (ArrayList<Visita>) objeto.readObject();
+            objeto.close();
+        } catch (Exception e) {
+            visita.clear();
+        }
     }
 }

@@ -22,7 +22,7 @@ public class telaVisualizarVisitas {
         janelaVisualizar.add(scrollPane, BorderLayout.CENTER);
 
 
-        for(int i=1; i< controlAgendamento.getCodigoVisitaTotal(); i++){
+        for(int i=1; i<=controlAgendamento.getCodigoVisitaTotal(); i++){
             areaTexto.append(" Codigo visita: " + i + " Codigo do Imovel: " + controlAgendamento.getCodigoImovelFromCodigoVisita(i)
                     + " Nome do Cliente: " + controlClientes.getClienteFromCPF(controlAgendamento.getCpfClienteFromCodigoVisita(i), 0).getNome()
                     + " Nome do Corretor Responsavel: " + controlCorretor.getNomeFuncionarioFromMatricula(controlAgendamento.getMatriculaCorretorFromCodigoVisita(i))

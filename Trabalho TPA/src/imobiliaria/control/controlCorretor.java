@@ -1,6 +1,8 @@
 package imobiliaria.control;
 
 import imobiliaria.model.Funcionario;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class controlCorretor {
@@ -12,6 +14,7 @@ public class controlCorretor {
 
     private static void adicionarCorretor(Funcionario f){
         corretor.add(f);
+        salvarArquivo();
     }
 
     public static void cadastrarFuncionario(String matricula, String nome, String endereco, String telefone, float comissao){
@@ -23,6 +26,7 @@ public class controlCorretor {
         for(Funcionario f : corretor){
             if(f.getMatricula().equals(matricula)) {
                 corretor.remove(f);
+                salvarArquivo();
                 return true;
             }
         }
@@ -53,6 +57,7 @@ public class controlCorretor {
                 f.setEndereco(endereco);
                 f.setTelefone(telefone);
                 f.setComissao(comissao);
+                salvarArquivo();
                 return true;
             }
         }
@@ -113,5 +118,27 @@ public class controlCorretor {
 
     public static float getComissaoFromPosicao(int i){
         return corretor.get(i).getComissao();
+    }
+
+    private static void salvarArquivo(){
+        try {
+            FileOutputStream file = new FileOutputStream("Funcionario.bin");
+            ObjectOutputStream objeto = new ObjectOutputStream(file);
+            objeto.writeObject(corretor);
+            objeto.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void carregarArquivo(){
+        try {
+            FileInputStream file = new FileInputStream("Funcionario.bin");
+            ObjectInputStream objeto = new ObjectInputStream(file);
+            corretor = (ArrayList<Funcionario>) objeto.readObject();
+            objeto.close();
+        } catch (Exception e) {
+            corretor.clear();
+        }
     }
 }
